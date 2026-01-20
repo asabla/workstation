@@ -15,7 +15,7 @@ WORKSTATION_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 . "$SCRIPT_DIR/lib/detect-os.sh"
 
 # Available applications
-AVAILABLE_APPS="nvim tmux zsh vscode"
+AVAILABLE_APPS="nvim tmux zsh vscode karabiner"
 
 # Selected applications (default: none)
 SELECTED_APPS=""
@@ -59,10 +59,11 @@ Options:
   --list              List available applications
 
 Applications:
-  nvim    Neovim editor
-  tmux    Terminal multiplexer
-  zsh     Z shell with oh-my-zsh
-  vscode  Visual Studio Code
+  nvim      Neovim editor
+  tmux      Terminal multiplexer
+  zsh       Z shell with oh-my-zsh
+  vscode    Visual Studio Code
+  karabiner Karabiner-Elements key remapper (macOS only)
 
 Examples:
   $0                  # Interactive menu
@@ -110,11 +111,12 @@ show_menu() {
     fi
     
     case "$app" in
-      nvim)   desc="Neovim editor" ;;
-      tmux)   desc="Terminal multiplexer" ;;
-      zsh)    desc="Z shell with oh-my-zsh" ;;
-      vscode) desc="Visual Studio Code" ;;
-      *)      desc="" ;;
+      nvim)      desc="Neovim editor" ;;
+      tmux)      desc="Terminal multiplexer" ;;
+      zsh)       desc="Z shell with oh-my-zsh" ;;
+      vscode)    desc="Visual Studio Code" ;;
+      karabiner) desc="Karabiner-Elements key remapper" ;;
+      *)         desc="" ;;
     esac
     
     # Check if app is available on this OS
@@ -123,6 +125,11 @@ show_menu() {
       tmux|zsh)
         if [ "$OS_FAMILY" = "windows" ]; then
           available=" ${YELLOW}(WSL only)${NC}"
+        fi
+        ;;
+      karabiner)
+        if [ "$OS" != "macos" ]; then
+          available=" ${YELLOW}(macOS only)${NC}"
         fi
         ;;
     esac
@@ -286,10 +293,11 @@ run_post_install() {
       . "$post_install_script"
       
       case "$app" in
-        nvim)   post_install_nvim ;;
-        tmux)   post_install_tmux ;;
-        zsh)    post_install_zsh ;;
-        vscode) post_install_vscode ;;
+        nvim)      post_install_nvim ;;
+        tmux)      post_install_tmux ;;
+        zsh)       post_install_zsh ;;
+        vscode)    post_install_vscode ;;
+        karabiner) post_install_karabiner ;;
       esac
     else
       log_info "No post-install script for $app"

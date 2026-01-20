@@ -1,0 +1,283 @@
+{
+    "global": { "show_in_menu_bar": false },
+    "profiles": [
+        {
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "K1: non_us_backslash -> grave, and Right-Option+key -> pipe (Swedish layout)",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "is_keyboard": true,
+                                                "product_id": 53296,
+                                                "vendor_id": 13364
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "non_us_backslash",
+                                    "modifiers": {
+                                        "mandatory": ["right_option"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "7",
+                                        "modifiers": ["right_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "is_keyboard": true,
+                                                "product_id": 53296,
+                                                "vendor_id": 13364
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "non_us_backslash",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "grave_accent_and_tilde" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Right Command to Right Option, and Right Option + grave_accent_and_tilde produces | (Swedish layout)",
+                        "enabled": false,
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [{ "vendor_id": 13364 }],
+                                        "type": "device_if"
+                                    }
+                                ],
+                                "from": { "key_code": "right_command" },
+                                "to": [{ "key_code": "right_option" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [{ "vendor_id": 13364 }],
+                                        "type": "device_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "grave_accent_and_tilde",
+                                    "modifiers": {
+                                        "mandatory": ["right_option"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "7",
+                                        "modifiers": ["right_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "K1: map 0x35 (grave) -> 0x64 (non_us_backslash) for this device only",
+                        "enabled": false,
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "is_keyboard": true,
+                                                "product_id": 53296,
+                                                "vendor_id": 13364
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "non_us_backslash",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "grave_accent_and_tilde" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Swedish keyboard, Left control + left option + semicolon -> ö",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "semicolon",
+                                    "modifiers": { "mandatory": ["left_control", "left_option"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "h",
+                                        "modifiers": ["left_control", "left_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Swedish keyboard, AltGr+key_left_of_z => Right option+7 (pipe character |)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "grave_accent_and_tilde",
+                                    "modifiers": { "mandatory": ["right_option"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "7",
+                                        "modifiers": ["right_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Swedish keyboard, AltGr+key_left_of_backspace => Option+Shift+7 (Backslash \\)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "hyphen",
+                                    "modifiers": { "mandatory": ["right_option"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "7",
+                                        "modifiers": ["left_option", "left_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Swedish keyboard, Right Alt + 7,0 => curly-brackets {}",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "7",
+                                    "modifiers": { "mandatory": ["right_alt"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "8",
+                                        "modifiers": ["left_option", "left_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "0",
+                                    "modifiers": { "mandatory": ["right_alt"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "9",
+                                        "modifiers": ["left_option", "left_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "devices": [
+                {
+                    "identifiers": { "is_keyboard": true },
+                    "simple_modifications": [
+                        {
+                            "from": { "apple_vendor_top_case_key_code": "keyboard_fn" },
+                            "to": [{ "key_code": "left_control" }]
+                        },
+                        {
+                            "from": { "key_code": "left_control" },
+                            "to": [{ "apple_vendor_top_case_key_code": "keyboard_fn" }]
+                        }
+                    ]
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 591,
+                        "vendor_id": 1452
+                    },
+                    "simple_modifications": [
+                        {
+                            "from": { "key_code": "grave_accent_and_tilde" },
+                            "to": [{ "key_code": "non_us_backslash" }]
+                        },
+                        {
+                            "from": { "key_code": "non_us_backslash" },
+                            "to": [{ "key_code": "grave_accent_and_tilde" }]
+                        }
+                    ]
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 53296,
+                        "vendor_id": 13364
+                    },
+                    "manipulate_caps_lock_led": false
+                },
+                {
+                    "identifiers": {
+                        "is_pointing_device": true,
+                        "product_id": 123,
+                        "vendor_id": 5426
+                    },
+                    "ignore": false,
+                    "mouse_flip_vertical_wheel": true
+                }
+            ],
+            "name": "Default profile",
+            "selected": true,
+            "simple_modifications": [
+                {
+                    "from": { "key_code": "caps_lock" },
+                    "to": [{ "key_code": "escape" }]
+                },
+                {
+                    "from": { "key_code": "right_command" },
+                    "to": [{ "key_code": "right_option" }]
+                },
+                {
+                    "from": { "key_code": "right_option" },
+                    "to": [{ "key_code": "right_command" }]
+                }
+            ],
+            "virtual_hid_keyboard": {
+                "country_code": 0,
+                "keyboard_type_v2": "ansi"
+            }
+        }
+    ]
+}

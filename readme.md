@@ -36,6 +36,7 @@ cd workstation
 | **tmux**    | Terminal multiplexer with TPM | Unix only |
 | **zsh**     | Z shell with oh-my-zsh and plugins | Unix only |
 | **vscode**  | Visual Studio Code settings and keybindings | All |
+| **karabiner** | Karabiner-Elements key remapper | macOS only |
 
 ## Directory Structure
 
@@ -49,9 +50,11 @@ workstation/
 │   ├── zsh/               # zsh config → ~/.zshrc, ~/.config/zsh/
 │   │   ├── .zshrc
 │   │   └── .config/zsh/
-│   └── vscode/            # VSCode settings (custom symlink)
-│       ├── settings.json
-│       └── keybindings.json
+│   ├── vscode/            # VSCode settings (custom symlink)
+│   │   ├── settings.json
+│   │   └── keybindings.json
+│   └── karabiner/         # Karabiner-Elements config (macOS) → ~/.config/karabiner
+│       └── .config/karabiner/
 ├── scripts/
 │   ├── install.sh         # Main installer with interactive menu
 │   ├── lib/               # Shared library functions
@@ -203,6 +206,7 @@ export WORKSTATION_BACKUP_DIR="$HOME/my-backups"
 | **tmux**    | `~/.tmux.conf`, `~/.tmux/` (plugins) |
 | **zsh**     | `~/.zshrc`, `~/.config/zsh/`, `~/.oh-my-zsh/custom/` |
 | **vscode**  | `settings.json`, `keybindings.json`, `snippets/`, extensions list |
+| **karabiner** | `~/.config/karabiner/` |
 
 ### Workflow Example
 
@@ -242,6 +246,16 @@ After running the installer, you may need to:
   ```sh
   ./scripts/post-install/vscode.sh export-extensions
   ```
+
+### Karabiner-Elements (macOS only)
+- Grant accessibility permissions in System Settings:
+  - System Settings > Privacy & Security > Accessibility
+  - Enable `karabiner_grabber` and `karabiner_observer`
+- Grant input monitoring permissions:
+  - System Settings > Privacy & Security > Input Monitoring
+  - Enable `karabiner_grabber` and `karabiner_observer`
+- Open Karabiner-Elements.app to start the service
+- Config changes are auto-reloaded when saved
 
 ## Customization
 

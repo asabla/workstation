@@ -25,6 +25,7 @@ zsh:.zshrc
 zsh:.config/zsh
 zsh:.oh-my-zsh
 tmux:.tmux
+karabiner:.config/karabiner
 EOF
 }
 
@@ -104,7 +105,7 @@ create_backup() {
   
   # Determine which apps to backup
   if [ "$apps" = "all" ]; then
-    apps_to_backup="nvim tmux zsh vscode"
+    apps_to_backup="nvim tmux zsh vscode karabiner"
   else
     apps_to_backup="$apps"
   fi
@@ -212,6 +213,21 @@ backup_app() {
         fi
       else
         log_info "  No existing VSCode config found"
+      fi
+      ;;
+    karabiner)
+      target="$HOME/.config/karabiner"
+      if [ -d "$target" ] || [ -L "$target" ]; then
+        mkdir -p "$app_backup_dir/.config"
+        if [ -L "$target" ]; then
+          echo "symlink:$(readlink "$target")" > "$app_backup_dir/symlink_info"
+          log_info "  karabiner config is symlinked, backing up content"
+          cp -RL "$target" "$app_backup_dir/.config/" 2>/dev/null || true
+        else
+          cp -R "$target" "$app_backup_dir/.config/"
+        fi
+      else
+        log_info "  No existing karabiner config found"
       fi
       ;;
     *)
@@ -385,6 +401,17 @@ restore_app() {
         fi
       fi
       ;;
+    karabiner)
+      target="$HOME/.config/karabiner"
+      if [ -d "$app_backup_dir/.config/karabiner" ]; then
+        rm -rf "$target"
+        mkdir -p "$(dirname "$target")"
+        cp -R "$app_backup_dir/.config/karabiner" "$target"
+        log_success "  Restored $target"
+      elif [ -f "$app_backup_dir/symlink_info" ]; then
+        log_info "  Original was symlinked, skipping restore"
+      fi
+      ;;
     *)
       log_warn "  Unknown application: $app"
       ;;
@@ -500,7 +527,7 @@ Commands:
   clean [keep]           Remove old backups, keep N most recent (default: 5)
 
 Options:
-  apps    Space-separated list of apps (nvim, tmux, zsh, vscode) or 'all'
+  apps    Space-separated list of apps (nvim, tmux, zsh, vscode, karabiner) or 'all'
   name    Backup name (defaults to timestamp)
   keep    Number of backups to keep when cleaning
 
@@ -536,7 +563,7 @@ main() {
       name=""
       for arg in "$@"; do
         case "$arg" in
-          nvim|tmux|zsh|vscode|all)
+          nvim|tmux|zsh|vscode|karabiner|all)
             apps="$apps $arg"
             ;;
           *)

@@ -16,7 +16,7 @@ ZSH_PACKAGES="zsh"
 VSCODE_PACKAGES="visual-studio-code"
 
 # Homebrew casks (GUI apps)
-CASKS=""
+KARABINER_PACKAGES="karabiner-elements"
 
 # Check and install Homebrew
 ensure_homebrew() {
@@ -107,6 +107,12 @@ install_vscode() {
   install_casks "$VSCODE_PACKAGES"
 }
 
+# Install Karabiner-Elements
+install_karabiner() {
+  log_step "Installing Karabiner-Elements..."
+  install_casks "$KARABINER_PACKAGES"
+}
+
 # Main installation function
 # Usage: install_macos_packages "nvim tmux zsh vscode"
 install_macos_packages() {
@@ -118,11 +124,12 @@ install_macos_packages() {
   
   for app in $selected_apps; do
     case "$app" in
-      nvim)   install_nvim ;;
-      tmux)   install_tmux ;;
-      zsh)    install_zsh ;;
-      vscode) install_vscode ;;
-      *)      log_warn "Unknown application: $app" ;;
+      nvim)      install_nvim ;;
+      tmux)      install_tmux ;;
+      zsh)       install_zsh ;;
+      vscode)    install_vscode ;;
+      karabiner) install_karabiner ;;
+      *)         log_warn "Unknown application: $app" ;;
     esac
   done
   
