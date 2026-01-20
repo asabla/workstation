@@ -1,163 +1,109 @@
+// Place your key bindings in this file to override the defaults
 [
-  // Navigation - mirroring vim-like navigation
-  {
-    "key": "ctrl+h",
-    "command": "workbench.action.navigateLeft"
-  },
-  {
-    "key": "ctrl+l",
-    "command": "workbench.action.navigateRight"
-  },
-  {
-    "key": "ctrl+k",
-    "command": "workbench.action.navigateUp"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "workbench.action.navigateDown"
-  },
-
-  // File explorer
-  {
-    "key": "ctrl+e",
-    "command": "workbench.view.explorer"
-  },
-  {
-    "key": "ctrl+e",
-    "command": "workbench.action.toggleSidebarVisibility",
-    "when": "explorerViewletVisible"
-  },
-
-  // Quick open / file search
-  {
-    "key": "ctrl+p",
-    "command": "workbench.action.quickOpen"
-  },
-
-  // Command palette
-  {
-    "key": "ctrl+shift+p",
-    "command": "workbench.action.showCommands"
-  },
-
-  // Terminal
-  {
-    "key": "ctrl+`",
-    "command": "workbench.action.terminal.toggleTerminal"
-  },
-  {
-    "key": "ctrl+shift+`",
-    "command": "workbench.action.terminal.new"
-  },
-
-  // Tab/Buffer management
-  {
-    "key": "alt+n",
-    "command": "workbench.action.nextEditor"
-  },
-  {
-    "key": "alt+p",
-    "command": "workbench.action.previousEditor"
-  },
-  {
-    "key": "ctrl+w",
-    "command": "workbench.action.closeActiveEditor"
-  },
-
-  // Split windows
-  {
-    "key": "ctrl+\\",
-    "command": "workbench.action.splitEditor"
-  },
-  {
-    "key": "ctrl+shift+\\",
-    "command": "workbench.action.splitEditorDown"
-  },
-
-  // Search
-  {
-    "key": "ctrl+shift+f",
-    "command": "workbench.action.findInFiles"
-  },
-  {
-    "key": "ctrl+f",
-    "command": "actions.find"
-  },
-
-  // Go to definition / references
-  {
-    "key": "gd",
-    "command": "editor.action.revealDefinition",
-    "when": "editorTextFocus && vim.mode == 'Normal'"
-  },
-  {
-    "key": "gr",
-    "command": "editor.action.goToReferences",
-    "when": "editorTextFocus && vim.mode == 'Normal'"
-  },
-  {
-    "key": "gi",
-    "command": "editor.action.goToImplementation",
-    "when": "editorTextFocus && vim.mode == 'Normal'"
-  },
-
-  // Code actions
-  {
-    "key": "ctrl+.",
-    "command": "editor.action.quickFix",
-    "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
-  },
-  {
-    "key": "f2",
-    "command": "editor.action.rename",
-    "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
-  },
-
-  // Format document
-  {
-    "key": "shift+alt+f",
-    "command": "editor.action.formatDocument",
-    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly"
-  },
-
-  // Toggle line comment (Ctrl+K Ctrl+K like in the nvim config)
-  {
-    "key": "ctrl+k ctrl+k",
-    "command": "editor.action.commentLine",
-    "when": "editorTextFocus && !editorReadonly"
-  },
-
-  // Save file
-  {
-    "key": "ctrl+s",
-    "command": "workbench.action.files.save"
-  },
-  {
-    "key": "ctrl+shift+s",
-    "command": "workbench.action.files.saveAll"
-  },
-
-  // Zen mode
-  {
-    "key": "ctrl+k z",
-    "command": "workbench.action.toggleZenMode"
-  },
-
-  // Problems panel
-  {
-    "key": "ctrl+shift+m",
-    "command": "workbench.actions.view.problems"
-  },
-
-  // Git
-  {
-    "key": "ctrl+shift+g",
-    "command": "workbench.view.scm"
-  },
-
-  // Extensions
-  {
-    "key": "ctrl+shift+x",
-    "command": "workbench.view.extensions"
-  }
+    // Toggle terminal with either ctrl + ö or ctrl + alt + ö
+    {
+        "key": "ctrl+shift+oem_3",
+        "command": "workbench.action.terminal.toggleTerminal"
+    },
+    {
+        "key": "ctrl+oem_3",
+        "command": "-workbench.action.terminal.toggleTerminal"
+    },
+    // Toggle maximize terminal panel
+    {
+        "key": "ctrl+shift+q",
+        "command": "workbench.action.toggleMaximizedPanel"
+    },
+    // Focus current tab in editor (semi focus mode)
+    {
+        "key": "ctrl+shift+space ctrl+shift+space",
+        "command": "workbench.action.toggleEditorWidths"
+    },
+    // On macOS: Use Command+M to accept the suggestion
+    {
+        "key": "option+m",
+        "command": "editor.action.inlineSuggest.commit",
+        "when": "inlineSuggestionVisible && !editorTabMovesFocus"
+    },
+    // On Windows/Linux: Use Alt+M to accept the suggestion
+    {
+        "key": "alt+m",
+        "command": "editor.action.inlineSuggest.commit",
+        "when": "inlineSuggestionVisible && !editorTabMovesFocus"
+    },
+    // Disable the default Ctrl+Enter binding for accepting inline suggestions
+    {
+        "key": "ctrl+enter",
+        "command": "-editor.action.inlineSuggest.commit",
+        "when": "inlineSuggestionVisible && !editorTabMovesFocus"
+    },
+    // Pane management (such as hide file explorer)
+    {
+        "key": "ctrl+k ctrl+b",
+        "command": "workbench.action.toggleSidebarVisibility"
+    },
+    {
+        "key": "ctrl+alt+numpad1 ctrl+alt+numpad2",
+        "command": "workbench.action.focusActiveEditorGroup"
+    },
+    {
+        "key": "ctrl+k ctrl+p",
+        "command": "bookmarks.jumpToNext",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+alt+l",
+        "command": "-bookmarks.jumpToNext",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+oem_3",
+        "command": "-workbench.action.terminal.toggleTerminal",
+        "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
+    },
+    {
+        "key": "ctrl+shift+[Semicolon]",
+        "command": "workbench.action.terminal.toggleTerminal",
+        "when": "terminal.active"
+    },
+    {
+        "key": "ctrl+shift+[Equal]",
+        "command": "-workbench.action.terminal.toggleTerminal",
+        "when": "terminal.active"
+    },
+    {
+        "key": "ctrl+k ctrl+k",
+        "command": "editor.action.commentLine",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "cmd+k cmd+c",
+        "command": "-editor.action.addCommentLine",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "cmd+k cmd+u",
+        "command": "-editor.action.removeCommentLine",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+shift+o",
+        "command": "editor.action.inlineSuggest.commit",
+        "when": "inInlineEditsPreviewEditor"
+    },
+    {
+        "key": "tab",
+        "command": "-editor.action.inlineSuggest.commit",
+        "when": "inInlineEditsPreviewEditor"
+    },
+    {
+        "key": "ctrl+shift+o",
+        "command": "editor.action.inlineSuggest.commit",
+        "when": "inlineEditIsVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineEditIsVisible && inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineEditIsVisible && inlineSuggestionVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible"
+    },
+    {
+        "key": "tab",
+        "command": "-editor.action.inlineSuggest.commit",
+        "when": "inlineEditIsVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineEditIsVisible && inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineEditIsVisible && inlineSuggestionVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible"
+    },
 ]
