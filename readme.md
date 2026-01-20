@@ -65,6 +65,8 @@ workstation/
 │   ├── stow/              # Symlink management
 │   │   ├── stow.sh        # GNU Stow wrapper
 │   │   └── symlink-windows.ps1
+│   ├── backup/            # Backup and restore
+│   │   └── backup.sh
 │   └── post-install/      # Post-installation hooks
 │       ├── nvim.sh
 │       ├── tmux.sh
@@ -139,6 +141,83 @@ On Windows, use PowerShell with administrator privileges:
 
 # List available packages
 .\scripts\stow\symlink-windows.ps1 -Command list
+```
+
+## Backup and Restore
+
+The backup system allows you to save your current configuration before trying new settings, and restore them if needed.
+
+### Backup Current Configuration
+
+```sh
+# Backup all applications
+./scripts/backup/backup.sh backup
+
+# Backup specific applications
+./scripts/backup/backup.sh backup nvim tmux
+
+# Backup with a custom name
+./scripts/backup/backup.sh backup all my_config_backup
+```
+
+### Restore from Backup
+
+```sh
+# Interactive restore (shows list of backups to choose from)
+./scripts/backup/backup.sh restore
+
+# Restore a specific backup
+./scripts/backup/backup.sh restore backup_20240120_153045
+
+# Restore only specific apps from a backup
+./scripts/backup/backup.sh restore backup_20240120_153045 nvim
+```
+
+### Manage Backups
+
+```sh
+# List all backups
+./scripts/backup/backup.sh list
+
+# Delete a specific backup
+./scripts/backup/backup.sh delete backup_20240120_153045
+
+# Clean old backups, keeping only the 3 most recent
+./scripts/backup/backup.sh clean 3
+```
+
+### Backup Location
+
+By default, backups are stored in `~/.workstation-backups`. You can override this by setting the `WORKSTATION_BACKUP_DIR` environment variable:
+
+```sh
+export WORKSTATION_BACKUP_DIR="$HOME/my-backups"
+./scripts/backup/backup.sh backup
+```
+
+### What Gets Backed Up
+
+| Application | Backed Up Files |
+|-------------|-----------------|
+| **nvim**    | `~/.config/nvim/` |
+| **tmux**    | `~/.tmux.conf`, `~/.tmux/` (plugins) |
+| **zsh**     | `~/.zshrc`, `~/.config/zsh/`, `~/.oh-my-zsh/custom/` |
+| **vscode**  | `settings.json`, `keybindings.json`, `snippets/`, extensions list |
+
+### Workflow Example
+
+```sh
+# 1. Backup current config before experimenting
+./scripts/backup/backup.sh backup all before_experiment
+
+# 2. Try out the new workstation configs
+./scripts/install.sh --all
+
+# 3. If you don't like it, restore your backup
+./scripts/backup/backup.sh restore before_experiment
+
+# 4. Or if you like it, delete the backup
+./scripts/backup/backup.sh delete before_experiment
 ```
 
 ## Post-Installation
