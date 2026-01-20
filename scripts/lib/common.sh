@@ -2,6 +2,10 @@
 # common.sh - Shared utility functions for workstation setup
 # POSIX-compliant shell script
 
+# Mark library as loaded to prevent double-sourcing
+WORKSTATION_LIB_LOADED=true
+export WORKSTATION_LIB_LOADED
+
 # Colors (only if terminal supports it)
 if [ -t 1 ]; then
   RED='\033[0;31m'

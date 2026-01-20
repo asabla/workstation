@@ -155,11 +155,14 @@ backup_app() {
       ;;
     tmux)
       mkdir -p "$app_backup_dir"
-      # Backup .tmux.conf
+      # Backup .tmux.conf (follow symlinks to get actual content)
       if [ -f "$HOME/.tmux.conf" ] || [ -L "$HOME/.tmux.conf" ]; then
         if [ -L "$HOME/.tmux.conf" ]; then
+          # Record symlink target for reference
           echo "symlink:$(readlink "$HOME/.tmux.conf")" > "$app_backup_dir/tmux.conf.symlink_info"
-          log_info "  .tmux.conf is symlinked"
+          log_info "  .tmux.conf is symlinked, backing up content"
+          # Follow symlink to backup actual content
+          cp -L "$HOME/.tmux.conf" "$app_backup_dir/.tmux.conf" 2>/dev/null || true
         else
           cp "$HOME/.tmux.conf" "$app_backup_dir/.tmux.conf"
         fi
@@ -171,16 +174,19 @@ backup_app() {
       ;;
     zsh)
       mkdir -p "$app_backup_dir"
-      # Backup .zshrc
+      # Backup .zshrc (follow symlinks to get actual content)
       if [ -f "$HOME/.zshrc" ] || [ -L "$HOME/.zshrc" ]; then
         if [ -L "$HOME/.zshrc" ]; then
+          # Record symlink target for reference
           echo "symlink:$(readlink "$HOME/.zshrc")" > "$app_backup_dir/zshrc.symlink_info"
-          log_info "  .zshrc is symlinked"
+          log_info "  .zshrc is symlinked, backing up content"
+          # Follow symlink to backup actual content
+          cp -L "$HOME/.zshrc" "$app_backup_dir/.zshrc" 2>/dev/null || true
         else
           cp "$HOME/.zshrc" "$app_backup_dir/.zshrc"
         fi
       fi
-      # Backup .config/zsh
+      # Backup .config/zsh (follow symlinks)
       if [ -d "$HOME/.config/zsh" ]; then
         mkdir -p "$app_backup_dir/.config"
         cp -RL "$HOME/.config/zsh" "$app_backup_dir/.config/" 2>/dev/null || true
@@ -542,7 +548,11 @@ main() {
       create_backup "$(echo "$apps" | tr -s ' ' | sed 's/^ //')" "$name"
       ;;
     restore)
-      restore_backup "$1" "$2"
+      # First arg is backup name, rest are apps
+      backup_name="$1"
+      shift 2>/dev/null || true
+      apps="$*"
+      restore_backup "$backup_name" "$apps"
       ;;
     list)
       list_backups

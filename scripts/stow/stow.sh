@@ -4,15 +4,24 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck disable=SC1091
-. "$SCRIPT_DIR/../lib/common.sh"
-# shellcheck disable=SC1091
-. "$SCRIPT_DIR/../lib/detect-os.sh"
+# Only source libraries if not already loaded (when run standalone)
+if [ -z "$WORKSTATION_LIB_LOADED" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+  # shellcheck disable=SC1091
+  . "$SCRIPT_DIR/../lib/common.sh"
+  # shellcheck disable=SC1091
+  . "$SCRIPT_DIR/../lib/detect-os.sh"
+fi
 
 # Get the workstation root directory
-WORKSTATION_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+if [ -z "$WORKSTATION_ROOT" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+  WORKSTATION_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+fi
 APPLICATIONS_DIR="$WORKSTATION_ROOT/applications"
+
+# Global flags
+FORCE_STOW=false
 
 # Check if stow is installed
 ensure_stow() {
@@ -23,6 +32,85 @@ ensure_stow() {
     log_info "  Arch: sudo pacman -S stow"
     exit 1
   fi
+}
+
+# Get list of files that would be created by stowing a package
+get_stow_targets() {
+  pkg="$1"
+  pkg_dir="$APPLICATIONS_DIR/$pkg"
+  
+  # Find all files in the package and convert to target paths
+  cd "$pkg_dir"
+  find . -type f -o -type l | sed 's|^\./||' | while read -r file; do
+    echo "$HOME/$file"
+  done
+  cd - > /dev/null
+}
+
+# Check for conflicts before stowing
+check_conflicts() {
+  pkg="$1"
+  pkg_dir="$APPLICATIONS_DIR/$pkg"
+  conflicts=""
+  
+  cd "$pkg_dir"
+  # Find all files and directories that would be created
+  find . -type f -o -type l | sed 's|^\./||' | while read -r file; do
+    target="$HOME/$file"
+    if [ -e "$target" ] && [ ! -L "$target" ]; then
+      echo "$target"
+    elif [ -L "$target" ]; then
+      # Check if symlink points to our stow package
+      link_target="$(readlink "$target" 2>/dev/null || true)"
+      case "$link_target" in
+        *"$APPLICATIONS_DIR/$pkg"*) 
+          # Already points to our package, no conflict
+          ;;
+        *)
+          # Points elsewhere, conflict
+          echo "$target"
+          ;;
+      esac
+    fi
+  done
+  cd - > /dev/null
+}
+
+# Remove conflicting files (with backup)
+remove_conflicts() {
+  pkg="$1"
+  
+  log_step "Checking for conflicts with $pkg..."
+  
+  conflicts=$(check_conflicts "$pkg")
+  
+  if [ -z "$conflicts" ]; then
+    log_info "No conflicts found for $pkg"
+    return 0
+  fi
+  
+  log_warn "Found conflicting files for $pkg:"
+  echo "$conflicts" | while read -r file; do
+    [ -n "$file" ] && printf "  - %s\n" "$file"
+  done
+  
+  if [ "$FORCE_STOW" = true ]; then
+    log_info "Force mode: removing conflicts..."
+  else
+    if ! confirm "Remove these files to continue? (They should be backed up first)"; then
+      log_error "Aborted. Please backup and remove conflicts manually, or use --force"
+      return 1
+    fi
+  fi
+  
+  echo "$conflicts" | while read -r file; do
+    if [ -n "$file" ] && [ -e "$file" ]; then
+      rm -rf "$file"
+      log_info "Removed: $file"
+    fi
+  done
+  
+  return 0
 }
 
 # Stow a single package
@@ -38,6 +126,11 @@ stow_package() {
   
   log_step "Stowing $pkg..."
   
+  # Check and handle conflicts first
+  if ! remove_conflicts "$pkg"; then
+    return 1
+  fi
+  
   # Run stow from the applications directory, targeting home
   cd "$APPLICATIONS_DIR"
   
@@ -48,6 +141,8 @@ stow_package() {
     log_success "Stowed $pkg"
   else
     log_error "Failed to stow $pkg"
+    log_info "Try running: ./scripts/backup/backup.sh backup $pkg"
+    log_info "Then retry with: ./scripts/stow/stow.sh stow $pkg"
     return 1
   fi
   
@@ -150,7 +245,10 @@ adopt_package() {
 # Print usage
 print_usage() {
   cat << EOF
-Usage: $0 <command> [packages...]
+Usage: $0 [options] <command> [packages...]
+
+Options:
+  -f, --force      Force remove conflicting files without prompting
 
 Commands:
   stow <packages>    Stow (link) the specified packages
@@ -161,13 +259,44 @@ Commands:
 
 Examples:
   $0 stow nvim tmux zsh
+  $0 --force stow tmux     # Force stow, removing conflicts
   $0 unstow nvim
   $0 list
+
+Note: Before stowing, it's recommended to backup your existing configs:
+  ./scripts/backup/backup.sh backup <package>
 EOF
 }
 
 # Main entry point when run directly
 if [ "${0##*/}" = "stow.sh" ]; then
+  if [ $# -lt 1 ]; then
+    print_usage
+    exit 1
+  fi
+  
+  # Parse options
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -f|--force)
+        FORCE_STOW=true
+        shift
+        ;;
+      -*)
+        if [ "$1" != "-h" ] && [ "$1" != "--help" ]; then
+          log_error "Unknown option: $1"
+          print_usage
+          exit 1
+        fi
+        print_usage
+        exit 0
+        ;;
+      *)
+        break
+        ;;
+    esac
+  done
+  
   if [ $# -lt 1 ]; then
     print_usage
     exit 1

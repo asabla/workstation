@@ -25,6 +25,7 @@ SKIP_PACKAGES=false
 SKIP_STOW=false
 SKIP_POST_INSTALL=false
 NON_INTERACTIVE=false
+FORCE_INSTALL=false
 
 # Print the banner
 print_banner() {
@@ -51,6 +52,7 @@ Options:
   -h, --help          Show this help message
   -a, --all           Install all applications
   -y, --yes           Non-interactive mode (use defaults)
+  -f, --force         Force overwrite existing configs (removes conflicts)
   --skip-packages     Skip package installation
   --skip-stow         Skip stow/symlink step
   --skip-post-install Skip post-installation hooks
@@ -67,6 +69,7 @@ Examples:
   $0 -a               # Install everything
   $0 nvim tmux        # Install specific apps
   $0 --skip-packages nvim  # Link configs only, skip package install
+  $0 --force tmux     # Force install tmux, removing conflicting files
 EOF
 }
 
@@ -243,6 +246,11 @@ link_configs() {
     # shellcheck disable=SC1091
     . "$SCRIPT_DIR/stow/stow.sh"
     
+    # Pass force flag to stow
+    if [ "$FORCE_INSTALL" = true ]; then
+      FORCE_STOW=true
+    fi
+    
     if [ -n "$(echo "$stow_apps" | tr -d ' ')" ]; then
       stow_packages "$stow_apps"
     fi
@@ -339,6 +347,9 @@ main() {
         ;;
       --skip-post-install)
         SKIP_POST_INSTALL=true
+        ;;
+      -f|--force)
+        FORCE_INSTALL=true
         ;;
       --list)
         printf "Available applications:\n"
