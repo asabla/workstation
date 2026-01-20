@@ -21,8 +21,8 @@ if [[ -z "$selected" ]]; then
     exit 0
 fi
 
-# Extract the target reference (after :::)
-target=$(echo "$selected" | cut -d':::' -f2)
+# Extract the target reference (after :::) using awk since cut doesn't support multi-char delimiters
+target=$(echo "$selected" | awk -F':::' '{print $2}')
 
 if [[ -n "$target" ]]; then
     tmux switch-client -t "$target"
