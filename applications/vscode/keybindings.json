@@ -1,0 +1,163 @@
+[
+  // Navigation - mirroring vim-like navigation
+  {
+    "key": "ctrl+h",
+    "command": "workbench.action.navigateLeft"
+  },
+  {
+    "key": "ctrl+l",
+    "command": "workbench.action.navigateRight"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "workbench.action.navigateUp"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "workbench.action.navigateDown"
+  },
+
+  // File explorer
+  {
+    "key": "ctrl+e",
+    "command": "workbench.view.explorer"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "explorerViewletVisible"
+  },
+
+  // Quick open / file search
+  {
+    "key": "ctrl+p",
+    "command": "workbench.action.quickOpen"
+  },
+
+  // Command palette
+  {
+    "key": "ctrl+shift+p",
+    "command": "workbench.action.showCommands"
+  },
+
+  // Terminal
+  {
+    "key": "ctrl+`",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "ctrl+shift+`",
+    "command": "workbench.action.terminal.new"
+  },
+
+  // Tab/Buffer management
+  {
+    "key": "alt+n",
+    "command": "workbench.action.nextEditor"
+  },
+  {
+    "key": "alt+p",
+    "command": "workbench.action.previousEditor"
+  },
+  {
+    "key": "ctrl+w",
+    "command": "workbench.action.closeActiveEditor"
+  },
+
+  // Split windows
+  {
+    "key": "ctrl+\\",
+    "command": "workbench.action.splitEditor"
+  },
+  {
+    "key": "ctrl+shift+\\",
+    "command": "workbench.action.splitEditorDown"
+  },
+
+  // Search
+  {
+    "key": "ctrl+shift+f",
+    "command": "workbench.action.findInFiles"
+  },
+  {
+    "key": "ctrl+f",
+    "command": "actions.find"
+  },
+
+  // Go to definition / references
+  {
+    "key": "gd",
+    "command": "editor.action.revealDefinition",
+    "when": "editorTextFocus && vim.mode == 'Normal'"
+  },
+  {
+    "key": "gr",
+    "command": "editor.action.goToReferences",
+    "when": "editorTextFocus && vim.mode == 'Normal'"
+  },
+  {
+    "key": "gi",
+    "command": "editor.action.goToImplementation",
+    "when": "editorTextFocus && vim.mode == 'Normal'"
+  },
+
+  // Code actions
+  {
+    "key": "ctrl+.",
+    "command": "editor.action.quickFix",
+    "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
+  },
+  {
+    "key": "f2",
+    "command": "editor.action.rename",
+    "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+  },
+
+  // Format document
+  {
+    "key": "shift+alt+f",
+    "command": "editor.action.formatDocument",
+    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly"
+  },
+
+  // Toggle line comment (Ctrl+K Ctrl+K like in the nvim config)
+  {
+    "key": "ctrl+k ctrl+k",
+    "command": "editor.action.commentLine",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+
+  // Save file
+  {
+    "key": "ctrl+s",
+    "command": "workbench.action.files.save"
+  },
+  {
+    "key": "ctrl+shift+s",
+    "command": "workbench.action.files.saveAll"
+  },
+
+  // Zen mode
+  {
+    "key": "ctrl+k z",
+    "command": "workbench.action.toggleZenMode"
+  },
+
+  // Problems panel
+  {
+    "key": "ctrl+shift+m",
+    "command": "workbench.actions.view.problems"
+  },
+
+  // Git
+  {
+    "key": "ctrl+shift+g",
+    "command": "workbench.view.scm"
+  },
+
+  // Extensions
+  {
+    "key": "ctrl+shift+x",
+    "command": "workbench.view.extensions"
+  }
+]
