@@ -37,6 +37,8 @@ cd workstation
 | **zsh**     | Z shell with oh-my-zsh and plugins | Unix only |
 | **vscode**  | Visual Studio Code settings and keybindings | All |
 | **karabiner** | Karabiner-Elements key remapper | macOS only |
+| **opencode** | OpenCode AI coding assistant with MCP servers | All |
+| **colima** | Colima container runtime (Docker alternative) | macOS only |
 
 ## Directory Structure
 
@@ -53,8 +55,12 @@ workstation/
 │   ├── vscode/            # VSCode settings (custom symlink)
 │   │   ├── settings.json
 │   │   └── keybindings.json
-│   └── karabiner/         # Karabiner-Elements config (macOS) → ~/.config/karabiner
-│       └── .config/karabiner/
+│   ├── karabiner/         # Karabiner-Elements config (macOS) → ~/.config/karabiner
+│   │   └── .config/karabiner/
+│   ├── opencode/          # OpenCode config → ~/.config/opencode
+│   │   └── .config/opencode/
+│   └── colima/            # Colima config (macOS) → ~/.colima
+│       └── .colima/default/
 ├── scripts/
 │   ├── install.sh         # Main installer with interactive menu
 │   ├── lib/               # Shared library functions
@@ -207,6 +213,8 @@ export WORKSTATION_BACKUP_DIR="$HOME/my-backups"
 | **zsh**     | `~/.zshrc`, `~/.config/zsh/`, `~/.oh-my-zsh/custom/` |
 | **vscode**  | `settings.json`, `keybindings.json`, `snippets/`, extensions list |
 | **karabiner** | `~/.config/karabiner/` |
+| **opencode** | `~/.config/opencode/` |
+| **colima** | `~/.colima/default/colima.yaml` |
 
 ### Workflow Example
 
@@ -256,6 +264,17 @@ After running the installer, you may need to:
   - Enable `karabiner_grabber` and `karabiner_observer`
 - Open Karabiner-Elements.app to start the service
 - Config changes are auto-reloaded when saved
+
+### OpenCode
+- Config includes MCP servers for context7 and Playwright
+- To use Playwright MCP, run: `npx playwright install`
+- Config location: `~/.config/opencode/opencode.json`
+
+### Colima (macOS only)
+- Colima provides Docker-compatible container runtime
+- Config is optimized for Apple Silicon (vz VM, virtiofs mounts)
+- Start with: `colima start`
+- To apply config changes: `colima delete && colima start`
 
 ## Customization
 

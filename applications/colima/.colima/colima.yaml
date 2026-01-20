@@ -1,0 +1,11 @@
+
+# Default conf
+arch: aarch64   # native apple silicon architecture
+vmType: vz      # use macOS virtualization framework
+
+kubernetes:
+  enabled: false
+
+resources:
+  memory: 24Gi
+  cpu: 10

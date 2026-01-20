@@ -15,7 +15,7 @@ WORKSTATION_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 . "$SCRIPT_DIR/lib/detect-os.sh"
 
 # Available applications
-AVAILABLE_APPS="nvim tmux zsh vscode karabiner"
+AVAILABLE_APPS="nvim tmux zsh vscode karabiner opencode colima"
 
 # Selected applications (default: none)
 SELECTED_APPS=""
@@ -64,6 +64,8 @@ Applications:
   zsh       Z shell with oh-my-zsh
   vscode    Visual Studio Code
   karabiner Karabiner-Elements key remapper (macOS only)
+  opencode  OpenCode AI coding assistant
+  colima    Colima container runtime (macOS only)
 
 Examples:
   $0                  # Interactive menu
@@ -116,6 +118,8 @@ show_menu() {
       zsh)       desc="Z shell with oh-my-zsh" ;;
       vscode)    desc="Visual Studio Code" ;;
       karabiner) desc="Karabiner-Elements key remapper" ;;
+      opencode)  desc="OpenCode AI coding assistant" ;;
+      colima)    desc="Colima container runtime" ;;
       *)         desc="" ;;
     esac
     
@@ -127,7 +131,7 @@ show_menu() {
           available=" ${YELLOW}(WSL only)${NC}"
         fi
         ;;
-      karabiner)
+      karabiner|colima)
         if [ "$OS" != "macos" ]; then
           available=" ${YELLOW}(macOS only)${NC}"
         fi
@@ -298,6 +302,8 @@ run_post_install() {
         zsh)       post_install_zsh ;;
         vscode)    post_install_vscode ;;
         karabiner) post_install_karabiner ;;
+        opencode)  post_install_opencode ;;
+        colima)    post_install_colima ;;
       esac
     else
       log_info "No post-install script for $app"

@@ -26,6 +26,8 @@ zsh:.config/zsh
 zsh:.oh-my-zsh
 tmux:.tmux
 karabiner:.config/karabiner
+opencode:.config/opencode
+colima:.colima
 EOF
 }
 
@@ -105,7 +107,7 @@ create_backup() {
   
   # Determine which apps to backup
   if [ "$apps" = "all" ]; then
-    apps_to_backup="nvim tmux zsh vscode karabiner"
+    apps_to_backup="nvim tmux zsh vscode karabiner opencode colima"
   else
     apps_to_backup="$apps"
   fi
@@ -228,6 +230,44 @@ backup_app() {
         fi
       else
         log_info "  No existing karabiner config found"
+      fi
+      ;;
+    opencode)
+      target="$HOME/.config/opencode"
+      if [ -d "$target" ] || [ -L "$target" ]; then
+        mkdir -p "$app_backup_dir/.config"
+        if [ -L "$target" ]; then
+          echo "symlink:$(readlink "$target")" > "$app_backup_dir/symlink_info"
+          log_info "  opencode config is symlinked, backing up content"
+          cp -RL "$target" "$app_backup_dir/.config/" 2>/dev/null || true
+        else
+          cp -R "$target" "$app_backup_dir/.config/"
+        fi
+      else
+        log_info "  No existing opencode config found"
+      fi
+      ;;
+    colima)
+      target="$HOME/.colima"
+      if [ -d "$target" ] || [ -L "$target" ]; then
+        mkdir -p "$app_backup_dir"
+        if [ -L "$target" ]; then
+          echo "symlink:$(readlink "$target")" > "$app_backup_dir/symlink_info"
+          log_info "  colima config is symlinked, backing up content"
+          # Only backup default profile config, not runtime files
+          if [ -f "$target/default/colima.yaml" ]; then
+            mkdir -p "$app_backup_dir/.colima/default"
+            cp "$target/default/colima.yaml" "$app_backup_dir/.colima/default/"
+          fi
+        else
+          # Only backup default profile config, not runtime files
+          if [ -f "$target/default/colima.yaml" ]; then
+            mkdir -p "$app_backup_dir/.colima/default"
+            cp "$target/default/colima.yaml" "$app_backup_dir/.colima/default/"
+          fi
+        fi
+      else
+        log_info "  No existing colima config found"
       fi
       ;;
     *)
@@ -412,6 +452,27 @@ restore_app() {
         log_info "  Original was symlinked, skipping restore"
       fi
       ;;
+    opencode)
+      target="$HOME/.config/opencode"
+      if [ -d "$app_backup_dir/.config/opencode" ]; then
+        rm -rf "$target"
+        mkdir -p "$(dirname "$target")"
+        cp -R "$app_backup_dir/.config/opencode" "$target"
+        log_success "  Restored $target"
+      elif [ -f "$app_backup_dir/symlink_info" ]; then
+        log_info "  Original was symlinked, skipping restore"
+      fi
+      ;;
+    colima)
+      target="$HOME/.colima/default/colima.yaml"
+      if [ -f "$app_backup_dir/.colima/default/colima.yaml" ]; then
+        mkdir -p "$HOME/.colima/default"
+        cp "$app_backup_dir/.colima/default/colima.yaml" "$target"
+        log_success "  Restored $target"
+      elif [ -f "$app_backup_dir/symlink_info" ]; then
+        log_info "  Original was symlinked, skipping restore"
+      fi
+      ;;
     *)
       log_warn "  Unknown application: $app"
       ;;
@@ -527,7 +588,7 @@ Commands:
   clean [keep]           Remove old backups, keep N most recent (default: 5)
 
 Options:
-  apps    Space-separated list of apps (nvim, tmux, zsh, vscode, karabiner) or 'all'
+  apps    Space-separated list of apps (nvim, tmux, zsh, vscode, karabiner, opencode, colima) or 'all'
   name    Backup name (defaults to timestamp)
   keep    Number of backups to keep when cleaning
 
@@ -563,7 +624,7 @@ main() {
       name=""
       for arg in "$@"; do
         case "$arg" in
-          nvim|tmux|zsh|vscode|karabiner|all)
+          nvim|tmux|zsh|vscode|karabiner|opencode|colima|all)
             apps="$apps $arg"
             ;;
           *)

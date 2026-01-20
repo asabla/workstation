@@ -17,6 +17,8 @@ VSCODE_PACKAGES="visual-studio-code"
 
 # Homebrew casks (GUI apps)
 KARABINER_PACKAGES="karabiner-elements"
+COLIMA_PACKAGES="colima docker"
+OPENCODE_PACKAGES="opencode"
 
 # Check and install Homebrew
 ensure_homebrew() {
@@ -113,6 +115,18 @@ install_karabiner() {
   install_casks "$KARABINER_PACKAGES"
 }
 
+# Install OpenCode
+install_opencode() {
+  log_step "Installing OpenCode..."
+  install_packages "$OPENCODE_PACKAGES"
+}
+
+# Install Colima
+install_colima() {
+  log_step "Installing Colima and Docker CLI..."
+  install_packages "$COLIMA_PACKAGES"
+}
+
 # Main installation function
 # Usage: install_macos_packages "nvim tmux zsh vscode"
 install_macos_packages() {
@@ -129,6 +143,8 @@ install_macos_packages() {
       zsh)       install_zsh ;;
       vscode)    install_vscode ;;
       karabiner) install_karabiner ;;
+      opencode)  install_opencode ;;
+      colima)    install_colima ;;
       *)         log_warn "Unknown application: $app" ;;
     esac
   done
