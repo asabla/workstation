@@ -1,5 +1,5 @@
 # Add deno completions to search path
-if [[ ":$FPATH:" != *":/Users/asabla/.zsh/completions:"* ]]; then export FPATH="/Users/asabla/.zsh/completions:$FPATH"; fi
+if [[ ":$FPATH:" != *":$HOME/.zsh/completions:"* ]]; then export FPATH="$HOME/.zsh/completions:$FPATH"; fi
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -141,23 +141,26 @@ export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # Created by `pipx` on 2024-05-28 22:06:47
-export PATH="$PATH:/Users/asabla/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # Go stuff
-export PATH="$PATH:$(go env GOPATH)/bin"
-. "/Users/asabla/.deno/env"
+# export PATH="$PATH:$(go env GOPATH)/bin"
+export PATH="$PATH:/usr/local/go/bin"
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/asabla/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 
 # bun
 export BUN_INSTALL="$HOME/Library/Application Support/reflex/bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/Users/asabla/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# opencode
+export PATH="$HOME/.opencode/bin:$PATH"
