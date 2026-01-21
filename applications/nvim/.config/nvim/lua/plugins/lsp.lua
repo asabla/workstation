@@ -25,21 +25,10 @@ return {
       },
     },
     config = function()
-      -- Default border style for floating windows
-      local border = 'single'
-
+      -- Configure diagnostics
       vim.diagnostic.config {
-        float = { border = border },
+        float = { border = 'rounded' },
       }
-
-      -- Override floating preview to use border
-      local open_floating_preview = vim.lsp.util.open_floating_preview
-      ---@diagnostic disable-next-line: duplicate-set-field
-      function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-        opts = opts or {}
-        opts.border = opts.border or border
-        return open_floating_preview(contents, syntax, opts, ...)
-      end
 
       -- LSP attach autocommand
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -49,15 +38,6 @@ return {
             mode = mode or 'n'
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
-
-          -- Configure hover/signature borders
-          vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-            title = ' Hover ',
-            border = border,
-          })
-          vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-            border = border,
-          })
 
           -- Navigation
           map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')

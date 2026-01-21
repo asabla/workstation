@@ -41,6 +41,7 @@ vim.opt.timeoutlen = 300
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
 vim.opt.scrolloff = 10
+vim.opt.winborder = 'rounded' -- Default border for floating windows (Neovim 0.11+)
 
 -- Splits
 vim.opt.splitright = true
