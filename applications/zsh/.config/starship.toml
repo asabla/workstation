@@ -74,7 +74,7 @@ symbol = ""
 style = "cyan"
 
 [python]
-format = "[‹py $version›]($style) "
+format = "[‹py $version( $virtualenv)›]($style) "
 symbol = ""
 style = "yellow"
 
