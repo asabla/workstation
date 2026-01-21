@@ -14,7 +14,7 @@ fi
 COMMON_PACKAGES="git stow fzf ripgrep fd curl wget base-devel"
 NVIM_PACKAGES="neovim nodejs npm"
 TMUX_PACKAGES="tmux"
-ZSH_PACKAGES="zsh"
+ZSH_PACKAGES="zsh starship"
 
 # AUR packages (require yay or similar)
 AUR_VSCODE="visual-studio-code-bin"
