@@ -4,11 +4,13 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck disable=SC1091
-. "$SCRIPT_DIR/../lib/common.sh"
-# shellcheck disable=SC1091
-. "$SCRIPT_DIR/../lib/detect-os.sh"
+if [ -z "$WORKSTATION_LIB_LOADED" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+  # shellcheck disable=SC1091
+  . "$SCRIPT_DIR/../lib/common.sh"
+  # shellcheck disable=SC1091
+  . "$SCRIPT_DIR/../lib/detect-os.sh"
+fi
 
 WORKSTATION_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 VSCODE_CONFIG_DIR="$WORKSTATION_ROOT/applications/vscode"

@@ -4,9 +4,11 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck disable=SC1091
-. "$SCRIPT_DIR/../lib/common.sh"
+if [ -z "$WORKSTATION_LIB_LOADED" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+  # shellcheck disable=SC1091
+  . "$SCRIPT_DIR/../lib/common.sh"
+fi
 
 OMZ_DIR="$HOME/.oh-my-zsh"
 ZSH_CUSTOM="${ZSH_CUSTOM:-$OMZ_DIR/custom}"

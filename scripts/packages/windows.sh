@@ -5,9 +5,11 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck disable=SC1091
-. "$SCRIPT_DIR/../lib/common.sh"
+if [ -z "$WORKSTATION_LIB_LOADED" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+  # shellcheck disable=SC1091
+  . "$SCRIPT_DIR/../lib/common.sh"
+fi
 
 # Winget packages
 COMMON_PACKAGES_WINGET="Git.Git junegunn.fzf BurntSushi.ripgrep.MSVC sharkdp.fd"

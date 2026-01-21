@@ -53,8 +53,31 @@ check_conflicts() {
   pkg_dir="$APPLICATIONS_DIR/$pkg"
   conflicts=""
   
+  # Check for directory symlinks that point elsewhere
+  # Stow uses "tree folding" - it may create a symlink to a whole directory
+  # if that directory doesn't exist yet. But if a symlink already exists
+  # pointing elsewhere, we need to remove it first.
   cd "$pkg_dir"
-  # Find all files and directories that would be created
+  find . -type d | sed 's|^\./||' | while read -r dir; do
+    [ -z "$dir" ] && continue
+    target="$HOME/$dir"
+    
+    if [ -L "$target" ]; then
+      # It's a symlink - check if it points to our stow package
+      link_target="$(readlink -f "$target" 2>/dev/null || readlink "$target" 2>/dev/null || true)"
+      case "$link_target" in
+        "$APPLICATIONS_DIR/$pkg"*|*"/applications/$pkg/"*)
+          # Already points to our package, no conflict
+          ;;
+        *)
+          # Points elsewhere, this is a conflict
+          echo "$target"
+          ;;
+      esac
+    fi
+  done
+  
+  # Find all files and symlinks that would be created
   find . -type f -o -type l | sed 's|^\./||' | while read -r file; do
     target="$HOME/$file"
     if [ -e "$target" ] && [ ! -L "$target" ]; then
@@ -63,7 +86,7 @@ check_conflicts() {
       # Check if symlink points to our stow package
       link_target="$(readlink "$target" 2>/dev/null || true)"
       case "$link_target" in
-        *"$APPLICATIONS_DIR/$pkg"*) 
+        *"$APPLICATIONS_DIR/$pkg"*|*"/applications/$pkg/"*) 
           # Already points to our package, no conflict
           ;;
         *)
@@ -104,7 +127,7 @@ remove_conflicts() {
   fi
   
   echo "$conflicts" | while read -r file; do
-    if [ -n "$file" ] && [ -e "$file" ]; then
+    if [ -n "$file" ] && { [ -e "$file" ] || [ -L "$file" ]; }; then
       rm -rf "$file"
       log_info "Removed: $file"
     fi

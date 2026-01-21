@@ -7,9 +7,11 @@ if [ "$(uname)" != "Darwin" ]; then
   return 0 2>/dev/null || exit 0
 fi
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck disable=SC1091
-. "$SCRIPT_DIR/../lib/common.sh"
+if [ -z "$WORKSTATION_LIB_LOADED" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+  # shellcheck disable=SC1091
+  . "$SCRIPT_DIR/../lib/common.sh"
+fi
 
 # Post-installation hook for Colima
 post_install_colima() {

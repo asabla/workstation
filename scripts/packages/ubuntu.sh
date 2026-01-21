@@ -4,9 +4,11 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck disable=SC1091
-. "$SCRIPT_DIR/../lib/common.sh"
+if [ -z "$WORKSTATION_LIB_LOADED" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+  # shellcheck disable=SC1091
+  . "$SCRIPT_DIR/../lib/common.sh"
+fi
 
 # APT packages
 COMMON_PACKAGES="git stow fzf ripgrep fd-find curl wget build-essential"

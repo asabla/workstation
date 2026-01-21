@@ -2,9 +2,11 @@
 # opencode.sh - Post-installation for OpenCode
 # POSIX-compliant shell script
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck disable=SC1091
-. "$SCRIPT_DIR/../lib/common.sh"
+if [ -z "$WORKSTATION_LIB_LOADED" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+  # shellcheck disable=SC1091
+  . "$SCRIPT_DIR/../lib/common.sh"
+fi
 
 # Post-installation hook for OpenCode
 post_install_opencode() {
