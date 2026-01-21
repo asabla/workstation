@@ -23,7 +23,7 @@ else
     fi
 
     # Use WORKSPACE_DEPTH if set, otherwise default to 2
-    depth="${WORKSPACE_DEPTH:-2}"
+    depth="${WORKSPACE_DEPTH:-3}"
 
     # Filter to only existing directories
     existing_dirs=()

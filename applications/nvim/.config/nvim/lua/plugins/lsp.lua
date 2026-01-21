@@ -28,9 +28,9 @@ return {
       -- Default border style for floating windows
       local border = 'single'
 
-      vim.diagnostic.config({
+      vim.diagnostic.config {
         float = { border = border },
-      })
+      }
 
       -- Override floating preview to use border
       local open_floating_preview = vim.lsp.util.open_floating_preview
@@ -99,7 +99,7 @@ return {
               group = vim.api.nvim_create_augroup('lsp-detach', { clear = true }),
               callback = function(event2)
                 vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds({ group = 'lsp-highlight', buffer = event2.buf })
+                vim.api.nvim_clear_autocmds { group = 'lsp-highlight', buffer = event2.buf }
               end,
             })
           end
@@ -107,7 +107,7 @@ return {
           -- Inlay hints toggle
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
             map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
           end
         end,
@@ -159,7 +159,7 @@ return {
       -- Ensure tools are installed
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, { 'stylua' })
-      require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
+      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       -- Setup LSP servers
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -170,7 +170,7 @@ return {
         capabilities = blink.get_lsp_capabilities(capabilities)
       end
 
-      require('mason-lspconfig').setup({
+      require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -178,7 +178,7 @@ return {
             require('lspconfig')[server_name].setup(server)
           end,
         },
-      })
+      }
     end,
   },
 }

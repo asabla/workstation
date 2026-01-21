@@ -20,7 +20,7 @@ return {
           })
         end,
       })
-      vim.cmd.colorscheme('catppuccin')
+      vim.cmd.colorscheme 'catppuccin'
     end,
   },
 
@@ -33,9 +33,9 @@ return {
     event = 'VimEnter',
     opts = {},
     config = function()
-      local wk = require('which-key')
+      local wk = require 'which-key'
       wk.setup()
-      wk.add({
+      wk.add {
         { '<leader>c', group = '[C]ode' },
         { '<leader>d', group = '[D]ebug/DAP' },
         { '<leader>g', group = '[G]it' },
@@ -44,7 +44,7 @@ return {
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>w', group = '[W]orkspace' },
-      })
+      }
       wk.add({
         { '<leader>h', group = 'Git [H]unk' },
       }, { mode = 'v' })
@@ -63,11 +63,11 @@ return {
     'echasnovski/mini.nvim',
     config = function()
       -- Better Around/Inside textobjects
-      require('mini.ai').setup({ n_lines = 500 })
+      require('mini.ai').setup { n_lines = 500 }
 
       -- Statusline
-      local statusline = require('mini.statusline')
-      statusline.setup({ use_icons = vim.g.have_nerd_font })
+      local statusline = require 'mini.statusline'
+      statusline.setup { use_icons = vim.g.have_nerd_font }
 
       -- Custom cursor location format
       ---@diagnostic disable-next-line: duplicate-set-field

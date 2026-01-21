@@ -11,7 +11,7 @@ return {
       -- Faster startup for big files
       bigfile = { enabled = true },
       -- Dashboard on startup
-      dashboard = { enabled = false },
+      dashboard = { enabled = true },
       -- Modern input/select UI
       input = { enabled = true },
       -- Notifications
@@ -27,8 +27,20 @@ return {
       words = { enabled = true },
     },
     keys = {
-      { '<leader>n', function() Snacks.notifier.show_history() end, desc = 'Show [N]otification History' },
-      { '<leader>un', function() Snacks.notifier.hide() end, desc = 'Dismiss All Notifications' },
+      {
+        '<leader>n',
+        function()
+          Snacks.notifier.show_history()
+        end,
+        desc = 'Show [N]otification History',
+      },
+      {
+        '<leader>un',
+        function()
+          Snacks.notifier.hide()
+        end,
+        desc = 'Dismiss All Notifications',
+      },
     },
   },
 }

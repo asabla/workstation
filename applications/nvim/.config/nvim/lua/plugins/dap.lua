@@ -11,26 +11,104 @@ return {
       'theHamsta/nvim-dap-virtual-text',
     },
     keys = {
-      { '<F5>', function() require('dap').continue() end, desc = 'Debug: Continue' },
-      { '<F1>', function() require('dap').step_into() end, desc = 'Debug: Step Into' },
-      { '<F2>', function() require('dap').step_over() end, desc = 'Debug: Step Over' },
-      { '<F3>', function() require('dap').step_out() end, desc = 'Debug: Step Out' },
-      { '<F7>', function() require('dapui').toggle() end, desc = 'Debug: Toggle UI' },
-      { '<leader>db', function() require('dap').toggle_breakpoint() end, desc = '[D]ebug: Toggle [B]reakpoint' },
-      { '<leader>dB', function() require('dap').set_breakpoint(vim.fn.input('Condition: ')) end, desc = '[D]ebug: Conditional [B]reakpoint' },
-      { '<leader>dc', function() require('dap').continue() end, desc = '[D]ebug: [C]ontinue' },
-      { '<leader>di', function() require('dap').step_into() end, desc = '[D]ebug: Step [I]nto' },
-      { '<leader>do', function() require('dap').step_over() end, desc = '[D]ebug: Step [O]ver' },
-      { '<leader>dO', function() require('dap').step_out() end, desc = '[D]ebug: Step [O]ut' },
-      { '<leader>dr', function() require('dap').repl.open() end, desc = '[D]ebug: [R]EPL' },
-      { '<leader>dl', function() require('dap').run_last() end, desc = '[D]ebug: Run [L]ast' },
+      {
+        '<F5>',
+        function()
+          require('dap').continue()
+        end,
+        desc = 'Debug: Continue',
+      },
+      {
+        '<F1>',
+        function()
+          require('dap').step_into()
+        end,
+        desc = 'Debug: Step Into',
+      },
+      {
+        '<F2>',
+        function()
+          require('dap').step_over()
+        end,
+        desc = 'Debug: Step Over',
+      },
+      {
+        '<F3>',
+        function()
+          require('dap').step_out()
+        end,
+        desc = 'Debug: Step Out',
+      },
+      {
+        '<F7>',
+        function()
+          require('dapui').toggle()
+        end,
+        desc = 'Debug: Toggle UI',
+      },
+      {
+        '<leader>db',
+        function()
+          require('dap').toggle_breakpoint()
+        end,
+        desc = '[D]ebug: Toggle [B]reakpoint',
+      },
+      {
+        '<leader>dB',
+        function()
+          require('dap').set_breakpoint(vim.fn.input 'Condition: ')
+        end,
+        desc = '[D]ebug: Conditional [B]reakpoint',
+      },
+      {
+        '<leader>dc',
+        function()
+          require('dap').continue()
+        end,
+        desc = '[D]ebug: [C]ontinue',
+      },
+      {
+        '<leader>di',
+        function()
+          require('dap').step_into()
+        end,
+        desc = '[D]ebug: Step [I]nto',
+      },
+      {
+        '<leader>do',
+        function()
+          require('dap').step_over()
+        end,
+        desc = '[D]ebug: Step [O]ver',
+      },
+      {
+        '<leader>dO',
+        function()
+          require('dap').step_out()
+        end,
+        desc = '[D]ebug: Step [O]ut',
+      },
+      {
+        '<leader>dr',
+        function()
+          require('dap').repl.open()
+        end,
+        desc = '[D]ebug: [R]EPL',
+      },
+      {
+        '<leader>dl',
+        function()
+          require('dap').run_last()
+        end,
+        desc = '[D]ebug: Run [L]ast',
+      },
     },
     config = function()
-      local dap = require('dap')
-      local dapui = require('dapui')
+      local dap = require 'dap'
+      local dapui = require 'dapui'
 
       -- Setup DAP UI
-      dapui.setup({
+      dapui.setup {
         icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
         controls = {
           icons = {
@@ -45,7 +123,7 @@ return {
             disconnect = '⏏',
           },
         },
-      })
+      }
 
       -- Setup virtual text
       require('nvim-dap-virtual-text').setup()
@@ -77,7 +155,7 @@ return {
     dependencies = { 'mfussenegger/nvim-dap' },
     opts = {
       delve = {
-        detached = vim.fn.has('win32') == 0,
+        detached = vim.fn.has 'win32' == 0,
       },
     },
   },
@@ -88,9 +166,9 @@ return {
     dependencies = { 'mfussenegger/nvim-dap' },
     config = function()
       -- Use uv for Python debugging
-      require('dap-python').setup('uv')
+      require('dap-python').setup 'uv'
 
-      local dap = require('dap')
+      local dap = require 'dap'
       dap.configurations.python = dap.configurations.python or {}
 
       -- Helper to find project venv
