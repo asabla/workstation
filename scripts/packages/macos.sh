@@ -14,7 +14,7 @@ fi
 COMMON_PACKAGES="git stow fzf ripgrep fd curl wget"
 NVIM_PACKAGES="neovim node"
 TMUX_PACKAGES="tmux"
-ZSH_PACKAGES="zsh"
+ZSH_PACKAGES="zsh starship"
 VSCODE_PACKAGES="visual-studio-code"
 
 # Homebrew casks (GUI apps)

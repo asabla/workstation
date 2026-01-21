@@ -112,10 +112,23 @@ install_tmux() {
   install_packages "$TMUX_PACKAGES"
 }
 
+# Install Starship prompt
+install_starship() {
+  if command_exists starship; then
+    log_info "Starship already installed"
+    return 0
+  fi
+  
+  log_step "Installing Starship prompt..."
+  curl -sS https://starship.rs/install.sh | sh -s -- -y
+  log_success "Starship installed"
+}
+
 # Install zsh packages
 install_zsh() {
   log_step "Installing zsh..."
   install_packages "$ZSH_PACKAGES"
+  install_starship
 }
 
 # Main installation function
