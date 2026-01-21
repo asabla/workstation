@@ -21,7 +21,7 @@ show_always = true
 
 [hostname]
 ssh_only = false
-format = "[@$hostname]($style)"
+format = "[@$hostname]($style) "
 style = "green bold"
 
 # =========================================================================
@@ -40,11 +40,11 @@ read_only = " 🔒"
 # =========================================================================
 
 [git_branch]
-format = "[‹$branch›]($style) "
+format = "[‹$branch]($style)"
 style = "yellow"
 
 [git_status]
-format = '([$all_status$ahead_behind]($style) )'
+format = '([$all_status$ahead_behind]($style))[›](yellow) '
 style = "red"
 ahead = "⇡${count}"
 behind = "⇣${count}"
