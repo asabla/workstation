@@ -1,3 +1,6 @@
+# Lazy.nvim lockfile (machine-specific plugin versions)
+lazy-lock.json
+
 # Compiled Lua sources
 luac.out
 
