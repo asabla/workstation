@@ -1,0 +1,96 @@
+# Starship prompt configuration
+# Styled to resemble the Oh-My-Zsh "bira" theme
+
+# Two-line prompt format like bira
+format = """
+╭─$username$hostname $directory $git_branch$git_status$nodejs$golang$python$cmd_duration
+╰─$character"""
+
+# Don't add blank line between prompts
+add_newline = false
+
+# =========================================================================
+# Username and Hostname (bira shows user@host)
+# =========================================================================
+
+[username]
+style_user = "green bold"
+style_root = "red bold"
+format = "[$user]($style)"
+show_always = true
+
+[hostname]
+ssh_only = false
+format = "[@$hostname]($style)"
+style = "green bold"
+
+# =========================================================================
+# Directory
+# =========================================================================
+
+[directory]
+truncation_length = 5
+truncate_to_repo = false
+style = "blue bold"
+format = "[$path]($style)[$read_only]($read_only_style)"
+read_only = " 🔒"
+
+# =========================================================================
+# Git (bira uses angle brackets for branch)
+# =========================================================================
+
+[git_branch]
+format = "[‹$branch›]($style) "
+style = "yellow"
+
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+style = "red"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+conflicted = "="
+untracked = "?"
+stashed = "$"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+
+# =========================================================================
+# Language versions (only shown when relevant files detected)
+# =========================================================================
+
+[nodejs]
+format = "[‹node $version›]($style) "
+symbol = ""
+style = "green"
+detect_files = ["package.json", ".nvmrc"]
+detect_folders = ["node_modules"]
+
+[golang]
+format = "[‹go $version›]($style) "
+symbol = ""
+style = "cyan"
+
+[python]
+format = "[‹py $version›]($style) "
+symbol = ""
+style = "yellow"
+
+# =========================================================================
+# Command duration (only show if > 2 seconds)
+# =========================================================================
+
+[cmd_duration]
+min_time = 2_000
+format = "[took $duration]($style) "
+style = "yellow"
+
+# =========================================================================
+# Prompt character (bira uses $ for user, # for root)
+# =========================================================================
+
+[character]
+success_symbol = "[\\$](green)"
+error_symbol = "[\\$](red)"
