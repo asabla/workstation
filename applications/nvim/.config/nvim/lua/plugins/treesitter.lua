@@ -42,6 +42,15 @@ return {
         enable = true,
         disable = { 'ruby' },
       },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = 'gnn', -- start selection (node under cursor)
+          node_incremental = 'grn', -- expand to next node
+          scope_incremental = 'grm', -- expand to scope (function, class, etc.)
+          node_decremental = 'grc', -- shrink
+        },
+      },
       textobjects = {
         select = {
           enable = true,

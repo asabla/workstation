@@ -105,6 +105,11 @@ install_zsh() {
   install_packages "$ZSH_PACKAGES"
 }
 
+# Install ssh packages
+install_ssh() {
+  log_info "OpenSSH is included with macOS; no additional packages needed for ssh config"
+}
+
 # Install VSCode
 install_vscode() {
   log_step "Installing Visual Studio Code..."
@@ -143,6 +148,7 @@ install_macos_packages() {
       nvim)      install_nvim ;;
       tmux)      install_tmux ;;
       zsh)       install_zsh ;;
+      ssh)       install_ssh ;;
       vscode)    install_vscode ;;
       karabiner) install_karabiner ;;
       opencode)  install_opencode ;;

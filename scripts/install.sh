@@ -15,7 +15,7 @@ WORKSTATION_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 . "$SCRIPT_DIR/lib/detect-os.sh"
 
 # Available applications
-AVAILABLE_APPS="nvim tmux zsh vscode karabiner opencode colima"
+AVAILABLE_APPS="nvim tmux zsh ssh vscode karabiner opencode colima"
 
 # Selected applications (default: none)
 SELECTED_APPS=""
@@ -62,6 +62,7 @@ Applications:
   nvim      Neovim editor
   tmux      Terminal multiplexer
   zsh       Z shell with oh-my-zsh
+  ssh       SSH client config (e.g. GitHub keys/agent)
   vscode    Visual Studio Code
   karabiner Karabiner-Elements key remapper (macOS only)
   opencode  OpenCode AI coding assistant
@@ -116,6 +117,7 @@ show_menu() {
       nvim)      desc="Neovim editor" ;;
       tmux)      desc="Terminal multiplexer" ;;
       zsh)       desc="Z shell with oh-my-zsh" ;;
+      ssh)       desc="SSH client config" ;;
       vscode)    desc="Visual Studio Code" ;;
       karabiner) desc="Karabiner-Elements key remapper" ;;
       opencode)  desc="OpenCode AI coding assistant" ;;

@@ -131,6 +131,11 @@ install_zsh() {
   install_starship
 }
 
+# Install ssh packages
+install_ssh() {
+  log_info "OpenSSH client is typically preinstalled; no additional packages needed for ssh config"
+}
+
 # Main installation function
 # Usage: install_ubuntu_packages "nvim tmux zsh vscode"
 install_ubuntu_packages() {
@@ -145,6 +150,7 @@ install_ubuntu_packages() {
       nvim)   install_nvim ;;
       tmux)   install_tmux ;;
       zsh)    install_zsh ;;
+      ssh)    install_ssh ;;
       vscode) install_vscode ;;
       *)      log_warn "Unknown application: $app" ;;
     esac

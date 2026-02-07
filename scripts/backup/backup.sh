@@ -24,6 +24,7 @@ tmux:.tmux.conf
 zsh:.zshrc
 zsh:.config/zsh
 zsh:.oh-my-zsh
+ssh:.ssh/config
 tmux:.tmux
 karabiner:.config/karabiner
 opencode:.config/opencode
@@ -107,7 +108,7 @@ create_backup() {
   
   # Determine which apps to backup
   if [ "$apps" = "all" ]; then
-    apps_to_backup="nvim tmux zsh vscode karabiner opencode colima"
+    apps_to_backup="nvim tmux zsh ssh vscode karabiner opencode colima"
   else
     apps_to_backup="$apps"
   fi
@@ -198,6 +199,21 @@ backup_app() {
       if [ -d "$HOME/.oh-my-zsh/custom" ]; then
         mkdir -p "$app_backup_dir/.oh-my-zsh"
         cp -R "$HOME/.oh-my-zsh/custom" "$app_backup_dir/.oh-my-zsh/"
+      fi
+      ;;
+    ssh)
+      target="$HOME/.ssh/config"
+      if [ -f "$target" ] || [ -L "$target" ]; then
+        mkdir -p "$app_backup_dir/.ssh"
+        if [ -L "$target" ]; then
+          echo "symlink:$(readlink "$target")" > "$app_backup_dir/symlink_info"
+          log_info "  ssh config is symlinked, backing up content"
+          cp -L "$target" "$app_backup_dir/.ssh/config" 2>/dev/null || true
+        else
+          cp "$target" "$app_backup_dir/.ssh/config"
+        fi
+      else
+        log_info "  No existing ssh config found"
       fi
       ;;
     vscode)
@@ -412,6 +428,18 @@ restore_app() {
         fi
       fi
       ;;
+    ssh)
+      target="$HOME/.ssh/config"
+      if [ -f "$app_backup_dir/.ssh/config" ]; then
+        mkdir -p "$HOME/.ssh"
+        rm -f "$target"
+        cp "$app_backup_dir/.ssh/config" "$target"
+        chmod 600 "$target" 2>/dev/null || true
+        log_success "  Restored $target"
+      elif [ -f "$app_backup_dir/symlink_info" ]; then
+        log_info "  Original was symlinked, skipping restore"
+      fi
+      ;;
     vscode)
       vscode_target="$HOME/$(get_vscode_target)"
       mkdir -p "$vscode_target"
@@ -588,7 +616,7 @@ Commands:
   clean [keep]           Remove old backups, keep N most recent (default: 5)
 
 Options:
-  apps    Space-separated list of apps (nvim, tmux, zsh, vscode, karabiner, opencode, colima) or 'all'
+  apps    Space-separated list of apps (nvim, tmux, zsh, ssh, vscode, karabiner, opencode, colima) or 'all'
   name    Backup name (defaults to timestamp)
   keep    Number of backups to keep when cleaning
 
@@ -624,7 +652,7 @@ main() {
       name=""
       for arg in "$@"; do
         case "$arg" in
-          nvim|tmux|zsh|vscode|karabiner|opencode|colima|all)
+          nvim|tmux|zsh|ssh|vscode|karabiner|opencode|colima|all)
             apps="$apps $arg"
             ;;
           *)

@@ -39,6 +39,31 @@ source "$XDG_CONFIG_HOME/zsh/aliases.zsh"
 # Key bindings
 source "$XDG_CONFIG_HOME/zsh/keybindings.zsh"
 
+# Start/reuse ssh-agent across shells.
+# Persisting agent variables avoids running eval manually each time.
+SSH_ENV="$HOME/.ssh/agent.env"
+
+load_ssh_agent() {
+  [ -f "$SSH_ENV" ] && . "$SSH_ENV" >/dev/null
+}
+
+start_ssh_agent() {
+  (umask 077; ssh-agent -s > "$SSH_ENV")
+  . "$SSH_ENV" >/dev/null
+}
+
+load_ssh_agent
+ssh-add -l >/dev/null 2>&1
+if [ $? -eq 2 ]; then
+  start_ssh_agent
+fi
+
+# Add default key when the agent is running but has no identities loaded.
+ssh-add -l >/dev/null 2>&1
+if [ $? -eq 1 ] && [ -f "$HOME/.ssh/id_ed25519" ]; then
+  ssh-add "$HOME/.ssh/id_ed25519" >/dev/null 2>&1
+fi
+
 # =========================================================================
 # Starship Prompt (fast, async)
 # =========================================================================
@@ -50,3 +75,7 @@ eval "$(starship init zsh)"
 # =========================================================================
 
 # zprof
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/asabla/.lmstudio/bin"
+# End of LM Studio CLI section

@@ -35,6 +35,7 @@ cd workstation
 | **nvim**    | Neovim editor with Lazy.nvim plugin manager | All |
 | **tmux**    | Terminal multiplexer with TPM | Unix only |
 | **zsh**     | Z shell with oh-my-zsh and plugins | Unix only |
+| **ssh**     | SSH client config (GitHub key/agent defaults) | All |
 | **vscode**  | Visual Studio Code settings and keybindings | All |
 | **karabiner** | Karabiner-Elements key remapper | macOS only |
 | **opencode** | OpenCode AI coding assistant with MCP servers | All |
@@ -52,6 +53,8 @@ workstation/
 │   ├── zsh/               # zsh config → ~/.zshrc, ~/.config/zsh/
 │   │   ├── .zshrc
 │   │   └── .config/zsh/
+│   ├── ssh/               # ssh config → ~/.ssh/config
+│   │   └── .ssh/config
 │   ├── vscode/            # VSCode settings (custom symlink)
 │   │   ├── settings.json
 │   │   └── keybindings.json
@@ -211,6 +214,7 @@ export WORKSTATION_BACKUP_DIR="$HOME/my-backups"
 | **nvim**    | `~/.config/nvim/` |
 | **tmux**    | `~/.tmux.conf`, `~/.tmux/` (plugins) |
 | **zsh**     | `~/.zshrc`, `~/.config/zsh/`, `~/.oh-my-zsh/custom/` |
+| **ssh**     | `~/.ssh/config` |
 | **vscode**  | `settings.json`, `keybindings.json`, `snippets/`, extensions list |
 | **karabiner** | `~/.config/karabiner/` |
 | **opencode** | `~/.config/opencode/` |

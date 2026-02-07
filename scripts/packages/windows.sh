@@ -74,6 +74,11 @@ install_zsh() {
   log_info "Then run this setup script from within WSL"
 }
 
+# Install ssh packages
+install_ssh() {
+  log_info "OpenSSH client is included with modern Windows builds; no additional packages needed for ssh config"
+}
+
 # Install VSCode
 install_vscode() {
   log_step "Installing Visual Studio Code..."
@@ -97,6 +102,7 @@ install_windows_packages() {
       nvim)   install_nvim ;;
       tmux)   install_tmux ;;
       zsh)    install_zsh ;;
+      ssh)    install_ssh ;;
       vscode) install_vscode ;;
       *)      log_warn "Unknown application: $app" ;;
     esac

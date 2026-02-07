@@ -113,6 +113,11 @@ install_zsh() {
   install_packages "$ZSH_PACKAGES"
 }
 
+# Install ssh packages
+install_ssh() {
+  log_info "OpenSSH is included with Arch base installs; no additional packages needed for ssh config"
+}
+
 # Main installation function
 # Usage: install_arch_packages "nvim tmux zsh vscode"
 install_arch_packages() {
@@ -127,6 +132,7 @@ install_arch_packages() {
       nvim)   install_nvim ;;
       tmux)   install_tmux ;;
       zsh)    install_zsh ;;
+      ssh)    install_ssh ;;
       vscode) install_vscode ;;
       *)      log_warn "Unknown application: $app" ;;
     esac

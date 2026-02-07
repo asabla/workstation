@@ -138,6 +138,19 @@ function Unlink-Vscode {
     Remove-Symlink -Path (Join-Path $destDir "keybindings.json")
 }
 
+# Link configuration for ssh
+function Link-Ssh {
+    $source = Join-Path $ApplicationsDir "ssh\.ssh\config"
+    $dest = Join-Path $env:USERPROFILE ".ssh\config"
+    New-SafeSymlink -Source $source -Destination $dest
+}
+
+# Unlink configuration for ssh
+function Unlink-Ssh {
+    $dest = Join-Path $env:USERPROFILE ".ssh\config"
+    Remove-Symlink -Path $dest
+}
+
 # Link all packages
 function Link-Packages {
     param([string[]]$PackageList)
@@ -147,6 +160,7 @@ function Link-Packages {
         switch ($pkg) {
             "nvim" { Link-Nvim }
             "vscode" { Link-Vscode }
+            "ssh" { Link-Ssh }
             "tmux" { Write-Warning "tmux is not supported on Windows. Use WSL." }
             "zsh" { Write-Warning "zsh is not supported on Windows. Use WSL." }
             default { Write-Warning "Unknown package: $pkg" }
@@ -163,6 +177,7 @@ function Unlink-Packages {
         switch ($pkg) {
             "nvim" { Unlink-Nvim }
             "vscode" { Unlink-Vscode }
+            "ssh" { Unlink-Ssh }
             default { Write-Warning "Unknown package: $pkg" }
         }
     }
