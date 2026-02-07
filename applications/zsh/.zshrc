@@ -36,8 +36,8 @@ source "$XDG_CONFIG_HOME/zsh/lazy-nvm.zsh"
 # Aliases
 source "$XDG_CONFIG_HOME/zsh/aliases.zsh"
 
-# Key bindings
-source "$XDG_CONFIG_HOME/zsh/keybindings.zsh"
+# Key bindings are loaded via zinit atload hook on OMZL::key-bindings.zsh
+# (see zinit.zsh) to ensure they apply after OMZ resets the keymap
 
 # Start/reuse ssh-agent across shells.
 # Persisting agent variables avoids running eval manually each time.

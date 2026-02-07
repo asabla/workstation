@@ -35,8 +35,13 @@ zinit wait lucid for \
 zinit wait lucid for \
     OMZL::completion.zsh \
     OMZL::history.zsh \
-    OMZL::key-bindings.zsh \
     OMZL::directories.zsh
+
+# Load OMZ key-bindings separately so we can re-apply custom keybindings
+# after it runs `bindkey -e` (which resets the keymap to emacs defaults)
+zinit wait lucid for \
+    atload"source '${XDG_CONFIG_HOME:-$HOME/.config}/zsh/keybindings.zsh'" \
+        OMZL::key-bindings.zsh
 
 # =========================================================================
 # Oh-My-Zsh plugins - deferred loading
