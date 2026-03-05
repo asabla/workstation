@@ -9,6 +9,7 @@ typeset -U path
 path=(
     "$HOME/.opencode/bin"
     "$HOME/.local/bin"
+    "$HOME/.cargo/bin"
     "$HOME/.dotnet/tools"
     "/usr/local/share/dotnet"
     "/usr/local/go/bin"
@@ -25,3 +26,7 @@ export PNPM_HOME="$HOME/Library/pnpm"
 
 # bun installation path
 export BUN_INSTALL="$HOME/Library/Application Support/reflex/bun"
+
+# Rust / Cargo
+export CARGO_HOME="$HOME/.cargo"
+export RUSTUP_HOME="$HOME/.rustup"
