@@ -2,12 +2,12 @@
 # lazy-nvm.zsh - On-demand NVM loading
 # NVM adds 300-800ms to startup; this defers loading until actually needed
 
-export NVM_DIR="$HOME/.nvm"
+# NVM_DIR is exported in .zshenv for all shell types
 
 # Function to load NVM (called on first use)
 _load_nvm() {
     # Unset placeholder functions first
-    unfunction nvm node npm npx yarn pnpm corepack 2>/dev/null
+    unfunction nvm yarn pnpm corepack 2>/dev/null
 
     # Load NVM from various possible locations
     if [ -s "$NVM_DIR/nvm.sh" ]; then
@@ -25,24 +25,11 @@ _load_nvm() {
 
 # Create placeholder functions that load NVM on first use
 # When any of these commands are called, NVM loads and then the real command runs
+# Note: node/npm/npx are already on PATH via .zshenv, so we only shim nvm and
+# package managers that aren't available without full NVM init.
 nvm() {
     _load_nvm
     nvm "$@"
-}
-
-node() {
-    _load_nvm
-    node "$@"
-}
-
-npm() {
-    _load_nvm
-    npm "$@"
-}
-
-npx() {
-    _load_nvm
-    npx "$@"
 }
 
 yarn() {

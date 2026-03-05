@@ -1,6 +1,8 @@
 # ~/.zshenv - sourced by ALL zsh invocations
 # Keep this minimal — it runs for every zsh process
 
+export NVM_DIR="$HOME/.nvm"
+
 # Add nvm default node to PATH (so node works in non-interactive shells)
 if [[ -r "$HOME/.nvm/alias/default" ]]; then
     _nvm_default=$(<"$HOME/.nvm/alias/default")

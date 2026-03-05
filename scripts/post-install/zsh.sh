@@ -96,6 +96,35 @@ set_default_shell() {
   fi
 }
 
+# Ensure nvm has a default alias set (required for .zshenv PATH setup)
+set_nvm_default() {
+  log_step "Checking nvm default alias..."
+
+  if [ ! -d "$HOME/.nvm" ]; then
+    log_info "nvm not installed, skipping"
+    return 0
+  fi
+
+  if [ -r "$HOME/.nvm/alias/default" ]; then
+    log_info "nvm default alias already set: $(cat "$HOME/.nvm/alias/default")"
+    return 0
+  fi
+
+  # Source nvm so we can use it
+  export NVM_DIR="$HOME/.nvm"
+  # shellcheck disable=SC1091
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+  if command_exists nvm; then
+    log_info "Setting nvm default alias to current node version..."
+    nvm alias default node
+    log_success "nvm default alias set"
+  else
+    log_warn "nvm not available — run 'nvm alias default <version>' manually"
+    log_info "This is required for node to work in non-interactive shells (.zshenv)"
+  fi
+}
+
 # Print usage instructions
 print_instructions() {
   log_info "zsh configuration:"
@@ -133,6 +162,7 @@ post_install_zsh() {
   install_oh_my_zsh
   install_custom_plugins
   set_default_shell
+  set_nvm_default
   print_instructions
   
   log_success "zsh post-installation complete"
