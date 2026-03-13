@@ -4,8 +4,8 @@
 return {
   -- Colorscheme
   {
-    'catppuccin/nvim',
-    name = 'catppuccin',
+    'folke/tokyonight.nvim',
+    name = 'tokyonight',
     priority = 1000,
     lazy = false,
     init = function()
@@ -20,7 +20,7 @@ return {
           })
         end,
       })
-      vim.cmd.colorscheme 'catppuccin'
+      vim.cmd.colorscheme 'tokyonight'
     end,
   },
 
