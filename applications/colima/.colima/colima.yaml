@@ -1,4 +1,3 @@
-
 # Default conf
 arch: aarch64   # native apple silicon architecture
 vmType: vz      # use macOS virtualization framework
