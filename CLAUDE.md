@@ -49,6 +49,20 @@ applications/zsh/.config/zsh/       → ~/.config/zsh/
 
 **Applications**: nvim, tmux, zsh, ssh, vscode, karabiner (macOS), opencode, colima (macOS). Each lives in `applications/<app>/` with optional package definitions in `scripts/packages/*.sh` and post-install hooks in `scripts/post-install/<app>.sh`.
 
+## SSH Setup
+
+The SSH config (`applications/ssh/.ssh/config`) uses `Include config.local` for machine-specific settings. Each machine needs a one-time setup:
+
+```sh
+# Create ~/.ssh/config.local with the correct key path for this machine
+cat > ~/.ssh/config.local <<'EOF'
+Host github.com
+  IdentityFile ~/.ssh/github/id_ed25519
+EOF
+```
+
+The zsh agent block auto-discovers and loads private keys from `~/.ssh/` and subdirectories — no hardcoded key paths in the repo.
+
 ## Code Conventions
 
 - Shell scripts use `#!/bin/sh` (POSIX-compliant) unless bash features are needed (`#!/usr/bin/env bash`)

@@ -218,6 +218,23 @@ if [ -z "$WORKSTATION_LIB_LOADED" ]; then
 fi
 ```
 
+## SSH Configuration
+
+The SSH application uses a split config approach to avoid committing machine-specific key paths:
+
+- `applications/ssh/.ssh/config` — shared defaults (stowed), includes `config.local`
+- `~/.ssh/config.local` — machine-specific settings (not in repo), defines `IdentityFile`
+
+**Initial setup per machine:**
+```sh
+cat > ~/.ssh/config.local <<'EOF'
+Host github.com
+  IdentityFile ~/.ssh/github/id_ed25519
+EOF
+```
+
+The zsh config (`applications/zsh/.zshrc`) auto-discovers and loads private keys from `~/.ssh/` and subdirectories using zsh glob qualifiers. **Do not hardcode key paths** in any checked-in file.
+
 ## Common Pitfalls
 
 1. **Don't use `cut` with multi-char delimiters** - Use `awk -F'delimiter'` instead
