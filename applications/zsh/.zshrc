@@ -40,28 +40,33 @@ source "$XDG_CONFIG_HOME/zsh/aliases.zsh"
 # (see zinit.zsh) to ensure they apply after OMZ resets the keymap
 
 # Start/reuse ssh-agent across shells.
-# Persisting agent variables avoids running eval manually each time.
+# Prefers an existing agent (macOS launchd / Linux desktop environment) over
+# starting a custom one, so UseKeychain and gnome-keyring keep working.
 SSH_ENV="$HOME/.ssh/agent.env"
 
-load_ssh_agent() {
+_ssh_agent_alive() {
+  ssh-add -l >/dev/null 2>&1
+  [ $? -ne 2 ]
+}
+
+# 1. Use existing agent from environment (macOS launchd / Linux desktop)
+# 2. Fall back to our persisted agent
+# 3. Start a new agent as last resort
+if ! _ssh_agent_alive; then
   [ -f "$SSH_ENV" ] && . "$SSH_ENV" >/dev/null
-}
-
-start_ssh_agent() {
-  (umask 077; ssh-agent -s > "$SSH_ENV")
-  . "$SSH_ENV" >/dev/null
-}
-
-load_ssh_agent
-ssh-add -l >/dev/null 2>&1
-if [ $? -eq 2 ]; then
-  start_ssh_agent
+  if ! _ssh_agent_alive; then
+    (umask 077; ssh-agent -s > "$SSH_ENV")
+    . "$SSH_ENV" >/dev/null
+  fi
 fi
 
-# Add default key when the agent is running but has no identities loaded.
+# Add any private keys when the agent is running but has no identities loaded.
 ssh-add -l >/dev/null 2>&1
-if [ $? -eq 1 ] && [ -f "$HOME/.ssh/id_ed25519" ]; then
-  ssh-add "$HOME/.ssh/id_ed25519" >/dev/null 2>&1
+if [ $? -eq 1 ]; then
+  for _key in "$HOME"/.ssh/id_*(N) "$HOME"/.ssh/*/id_*(N); do
+    [[ "$_key" != *.pub ]] && ssh-add "$_key" >/dev/null 2>&1
+  done
+  unset _key
 fi
 
 # =========================================================================
